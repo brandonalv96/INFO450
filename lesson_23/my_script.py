@@ -1,51 +1,24 @@
-import pandas as pd
+
+import pandas as pd 
 import streamlit as st
 import plotly.express as px
-from pathlib import Path
 
-# Load the data
-file_path = Path(__file__).parent / 'Advertising_F.csv'
-df = pd.read_csv(file_path)
-
-# Title
+df=pd.read_csv('Advertising_F.csv')
 st.title('Advertising Effectiveness Brandon')
 
-# Sidebar filters
 st.sidebar.header('Filters')
+x_var=st.selectbox('X axis',['TV','radio','newspaper'])
 
-x_var = st.sidebar.selectbox(
-    'X axis',
-    ['TV', 'Radio', 'Newspaper']
-)
-
-# Show scatterplot
-fig = px.scatter(
-    df,
-    x=x_var,
-    y='Sales',
-    title='Advertising Spending vs Sales'
-)
+#Show scatterplot
+px.scatter(df, x=x_var, y='sales',
+           labels={'TV': 'TV add spend', 'radio': 'Radio add spend'})
 
 st.plotly_chart(fig)
 
-# Show bar chart
-sales_by_channel = pd.DataFrame({
-    'Channel': ['TV', 'Radio', 'Newspaper'],
-    'Total Spending': [
-        df['TV'].sum(),
-        df['Radio'].sum(),
-        df['Newspaper'].sum()
-    ]
-})
-
-fig = px.bar(
-    sales_by_channel,
-    x='Channel',
-    y='Total Spending',
-    title='Total Advertising Spending by Channel'
-)
-
+#show the barplot
+sales_per_city=df.groupby('City')['sales'].sum().reset_index()
+fig=px.bar(sales_per_city,x='City',y='sales',title='data is fun')
 st.plotly_chart(fig)
 
-# Show dataframe
+#show the dataframe
 st.dataframe(df)
