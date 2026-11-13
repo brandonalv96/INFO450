@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 import plotly.express as px
 
-df=pd.read_csv("lesson_23/Advertising_F")
+df=pd.read_csv("lesson_23/Advertising_F.csv")
 st.title('Advertising Effectiveness Brandon')
 
 st.sidebar.header('Filters')
